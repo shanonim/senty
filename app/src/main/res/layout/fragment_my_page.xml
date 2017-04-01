@@ -5,7 +5,7 @@
 
         <variable
             name="myPage"
-            type="com.shanonim.senty.MyPageFragment" />
+            type="com.shanonim.senty.fragment.MyPageFragment" />
     </data>
 
     <LinearLayout

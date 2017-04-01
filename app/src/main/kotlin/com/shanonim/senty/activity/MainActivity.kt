@@ -1,9 +1,11 @@
-package com.shanonim.senty
+package com.shanonim.senty.activity
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import com.shanonim.senty.fragment.MyPageFragment
+import com.shanonim.senty.R
 import com.shanonim.senty.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
