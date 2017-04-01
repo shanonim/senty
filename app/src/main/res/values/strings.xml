@@ -4,6 +4,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_my_page">MyPage</string>
 
+    <string name="title_activity_maps">Map</string>
+
     <string name="favorite">お気に入り</string>
     <string name="about_senty">sentyについて</string>
 </resources>
