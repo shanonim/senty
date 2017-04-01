@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity() {
                 binding?.message?.setText(R.string.title_dashboard)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
-                binding?.message?.setText(R.string.title_notifications)
+            R.id.navigation_my_page -> {
+                val myPageFragment = MyPageFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.content, myPageFragment).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
-
 }
