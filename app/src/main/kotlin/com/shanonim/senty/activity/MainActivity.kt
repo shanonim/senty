@@ -1,5 +1,7 @@
 package com.shanonim.senty.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import com.shanonim.senty.fragment.MyPageFragment
 import com.shanonim.senty.R
 import com.shanonim.senty.databinding.ActivityMainBinding
+import kotlin.reflect.KClass
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding?.navigation?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        binding?.navigation?.findViewById(R.id.navigation_home)?.performClick()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                binding?.message?.setText(R.string.title_dashboard)
+                startActivity(MapsActivity::class)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_my_page -> {
@@ -37,5 +42,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
+    }
+
+    fun <T : Activity> Activity.startActivity(classRef: KClass<T>, bundle: Bundle? = null) {
+        val intent = Intent(this, classRef.java).setAction(Intent.ACTION_VIEW)
+        bundle?.let {
+            intent.putExtra("args", bundle)
+        }
+        startActivity(intent)
     }
 }
