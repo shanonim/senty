@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import com.shanonim.senty.fragment.MyPageFragment
 import com.shanonim.senty.R
 import com.shanonim.senty.databinding.ActivityMainBinding
+import com.shanonim.senty.fragment.MapFragment
 import kotlin.reflect.KClass
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                startActivity(MapsActivity::class)
+                supportFragmentManager.beginTransaction().replace(R.id.content, MapFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_my_page -> {
