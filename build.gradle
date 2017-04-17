@@ -2,6 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.1.1'
+    ext.databinding_compiler_version = '2.3.1'
     repositories {
         jcenter()
     }
