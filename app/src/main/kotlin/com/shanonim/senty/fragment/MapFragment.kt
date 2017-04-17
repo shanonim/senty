@@ -32,7 +32,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var mMap: GoogleMap? = null
     private val MIN_TIME: Long = 1000
     private val MIN_DISTANCE: Float = 50f
-    private val REQUEST_PERMISSION: Int = 1000
+
+    private val mapFragment = SupportMapFragment()
 
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location?) {
@@ -76,34 +77,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun setMap() {
-        val mapFragment = SupportMapFragment()
-        val fragmentManager = childFragmentManager
-
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_map, mapFragment)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
-                .commit()
+                .commitAllowingStateLoss()
         mapFragment.getMapAsync(this)
 
-        checkPermission()
-    }
-
-    private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getCurrentLocation()
-        } else {
-            requestLocationPermission()
-        }
-    }
-
-    private fun requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_PERMISSION)
-        } else {
-            Toast.makeText(context, "please allow getting location", Toast.LENGTH_SHORT).show()
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_PERMISSION)
-        }
+        getCurrentLocation()
     }
 
     private fun getCurrentLocation() {
