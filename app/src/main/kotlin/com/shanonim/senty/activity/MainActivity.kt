@@ -21,15 +21,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding?.navigation?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        binding?.navigation?.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         binding?.navigation?.findViewById(R.id.navigation_home)?.performClick()
     }
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                binding?.message?.setText(R.string.title_home)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
