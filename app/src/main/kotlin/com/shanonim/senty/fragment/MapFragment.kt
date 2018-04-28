@@ -2,17 +2,16 @@ package com.shanonim.senty.fragment
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,6 +21,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.shanonim.senty.R
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.support.v4.view.animation.LinearOutSlowInInterpolator
+
+
 
 /**
  * Fragment for Google Map
@@ -59,7 +63,51 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         MapFragmentPermissionsDispatcher.setMapWithCheck(this)
 
+        val fab = view.findViewById(R.id.fab)
+        fab.setOnClickListener { Toast.makeText(context, "tapped fab!", Toast.LENGTH_SHORT).show() }
+        fab.visibility = View.GONE
+        fab.viewTreeObserver
+                .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        show(fab)
+                    }
+                })
+
         return view
+    }
+
+    interface InternalVisibilityChangedListener {
+        fun onShown()
+    }
+
+    private val SHOW_HIDE_ANIM_DURATION = 200
+    private val LINEAR_OUT_SLOW_IN_INTERPOLATOR = LinearOutSlowInInterpolator()
+
+    fun show(view: View, listener: InternalVisibilityChangedListener?) {
+        if (view.visibility == View.VISIBLE) return
+
+        view.animate().cancel()
+
+        view.alpha = 0f
+        view.scaleY = 0f
+        view.scaleX = 0f
+
+        view.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .alpha(1f)
+                .setDuration(SHOW_HIDE_ANIM_DURATION.toLong())
+                .setInterpolator(LINEAR_OUT_SLOW_IN_INTERPOLATOR)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animation: Animator) {
+                        view.visibility = View.VISIBLE
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+                        listener?.onShown()
+                        super.onAnimationEnd(animation)
+                    }
+                })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
